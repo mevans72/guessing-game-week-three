@@ -26,15 +26,19 @@
 //
 // randomImgs();
 
+function Image(imageName) {
+  this.imageName = imageName;
+}
+
 var baby = 'baby';
 var banana = 'banana';
 var pen = 'pen';
 var shark = 'shark';
 
-var imageNames = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg','pen.jpg','pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg']
+var images = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg','pen.jpg','pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg']
 
-var bag = document.createElement('img');
-bag.setAttribute('src', 'assets/' + imageNames[0])
+// var bag = document.createElement('img');
+// bag.setAttribute('src', 'assets/' + images[0])
 
 //document.body.appendChild(bag)
 
@@ -47,6 +51,7 @@ var stuffSeen = [];
 var stuffPushed = [];
 var stuffSeenMulti = [];
 var timesRan = [];
+var imgEls = [];
 
 function randomImgs() {
   for (var i = 0; i < 3; i++) {
@@ -79,14 +84,29 @@ function randomImgs() {
   // Keep track of stuffSeen by pushing this rounds/forloops stuff and log the all of the stuff seen to the console
   stuffSeen.push(stuff[index1],stuff[index2],stuff[index3]);
   console.log('stuffSeen: ' + '[ ' + stuffSeen + ' ]');
-}
+};
 randomImgs();
-// for (var i=0; i < tableData.length; i++) {
+
+
+///working
+//begin dunkins example
+// var bag = document.createElement('img');
+// bag.setAttribute('src', 'assets/' + images[0])
+//end dunkins example
+
+function genImgEls(){
+  for (var i=0; i < images.length; i++) {
+    var imageName = document.createElement('img');
+    imageName.setAttribute('src', 'assets/' + images[i]);
+    imgEls.push(imageName);
+  }
+};
+
 //   var trEL = document.createElement('tr');
 //   table.appendChild(trEL);
-//   for (var j=0; j < tableData[i].length; j++){
+//   for (var j=0; j < imageNames[i].length; j++){
 //     var tdEl = document.createElement('td');
-//     tdEl.textContent = tableData[i][j];
+//     tdEl.textContent = imageNames[i][j];
 //     trEL.appendChild(tdEl);
 //   }
 // }
