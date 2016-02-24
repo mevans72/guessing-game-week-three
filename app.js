@@ -25,10 +25,10 @@ var pen = new Image('pen', 'Pen Utensils', 'assets/pen.jpg');
 var petSweep = new Image('petSweep', 'Pet Sweep', 'assets/petSweep.jpg');
 var scissors = new Image('scissors', 'Pizza Scissors', 'assets/scissors.jpg');
 var shark = new Image('shark', 'Shark Bag', 'assets/shark.jpg');
-var sweep = new Image('sweep', 'Baby Sweep', 'assets/sweep.jpg');
+var sweep = new Image('sweep', 'Baby Sweep', 'assets/sweep.png');
 var tauntaun = new Image('tauntaun', 'Tauntaun', 'assets/tauntaun.jpg');
 var unicorn = new Image('unicorn', 'Unicorn Meat', 'assets/unicorn.jpg');
-var usb = new Image('usb', 'Tentacle USB', 'assets/usb.jpg');
+var usb = new Image('usb', 'Tentacle USB', 'assets/usb.gif');
 var waterCan = new Image('waterCan', 'Water Can', 'assets/waterCan.jpg');
 var wineGlass = new Image('wineGlass', 'Spill-free Wine Glass', 'assets/wineGlass.jpg');
 
@@ -38,6 +38,7 @@ Image.prototype.renderImage = function() {
   // imageRendered.setAttribute('src', imageSrc);
   imageRendered.id = this.imageID;
   document.getElementById('display-three-pictures-here').appendChild(imageRendered);
+  console.log('Displaying ImageID: ' + imageRendered.id);
   this.timesShown++;
 };
 
@@ -69,8 +70,35 @@ function renderThreeRandomImages() {
     object.renderImage();
   }
 }
+renderThreeRandomImages();
+imgageEventListener();
 
+function logClickedImages() {
+  // console.log('Logging that a click has happened while testing...first thing to do when testing');
+  var clickedId = this.id;
+  for(var i = 0; i < imageDataArray.length; i++) {
+    if(clickedId === imageDataArray[i].imageID) {
+      imageDataArray[i].timesClicked++;
+      console.log('\'' + imageDataArray[i].imageDescription + '\'' + ' has been clicked ' + imageDataArray[i].timesClicked + ' times.');
+    }
+  }
+  renderNewThreeRandomImages();
 
+}
+
+function imgageEventListener() {
+  var displayedImages = document.getElementsByTagName('img');
+  for(var i = 0; i < displayedImages.length; i++) {
+    displayedImages[i].addEventListener('click', logClickedImages);
+  }
+}
+
+function renderNewThreeRandomImages() {
+  var imageDisplaySection = document.getElementById('display-three-pictures-here');
+  imageDisplaySection.textContent='';
+  renderThreeRandomImages();
+  imgageEventListener();
+}
 
 //OLDER CODE BELOW
 // function randomImgs() {
