@@ -6,7 +6,7 @@ function Image(imageID,imageDescription,imageSrc) {
   this.imageID = imageID;
   this.imageDescription = imageDescription;
   this.imageSrc = imageSrc;
-  this.timesShown = 0;
+  this.timesDisplayed = 0;
   this.timesClicked = 0;
   imageDataArray.push(this);
 }
@@ -39,7 +39,7 @@ Image.prototype.renderImage = function() {
   imageRendered.id = this.imageID;
   document.getElementById('display-three-pictures-here').appendChild(imageRendered);
   console.log('Displaying ImageID: ' + imageRendered.id);
-  this.timesShown++;
+  this.timesDisplayed++;
 };
 
 function genRandomImageNum() {
@@ -83,7 +83,7 @@ function logClickedImages() {
     }
   }
   renderNewThreeRandomImages();
-
+  buildBarChart();
 }
 
 function imgageEventListener() {
@@ -93,9 +93,68 @@ function imgageEventListener() {
   }
 }
 
+// function countTwentyFiveClicksEventListener() {
+//   var twentyFiveClicks = 0;
+//   for(var i = 0; i < twentyFiveClicks.length; i++) {
+//     twentyFiveClicks[i].addEventListener('click', logClickedImages);
+//   }
+// }
+
 function renderNewThreeRandomImages() {
   var imageDisplaySection = document.getElementById('display-three-pictures-here');
   imageDisplaySection.textContent='';
   renderThreeRandomImages();
   imgageEventListener();
+}
+
+var barChart = null;
+var labelsArray;
+var clicksArray;
+var displayedArray;
+
+function genChartData() {
+  clicksArray = [];
+  displayedArray = [];
+  for(var i = 0; i < imageDataArray.length; i++) {
+    clicksArray.push(imageDataArray[i].timesClicked);
+    displayedArray.push(imageDataArray[i].timesDisplayed);
+  }
+};
+
+function genChartLabels() {
+  labelsArray = [];
+  for(var i = 0; i < imageDataArray.length; i++) {
+    labelsArray.push(imageDataArray[i].imageDescription);
+  }
+}
+
+function destroyExistingChart() {
+  if(barChart != null) {
+    barChart.destroy();
+  }
+}
+
+function buildBarChart() {
+  destroyExistingChart();
+  genChartLabels();
+  genChartData();
+  //attempting charting with chart-js.js
+  var barData = {
+    labels : labelsArray,
+    datasets : [
+      {
+        fillColor : '#48A497',
+        strokeColor : '#48A4D1',
+        data : clicksArray
+      },
+      {
+        fillColor : 'rgba(73,188,170,0.4)',
+        strokeColor : 'rgba(72,174,209,0.4)',
+        data : displayedArray
+      }
+    ]
+  };
+// get bar chart canvas
+  var clickedAndDisplayedChart = document.getElementById('display-chart-one-here').getContext('2d');
+  barChart = new Chart(clickedAndDisplayedChart).Bar(barData);
 }
