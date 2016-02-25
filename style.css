@@ -5,13 +5,29 @@ img {
   border: 2px solid darkgrey;
 }
 
-h1 {
+img#display-gameOver-here, img#display-playAgainTwo-here {
+  height: 400px;
+  width: 600px;
+  border-radius: 100px;
+  box-shadow: 50px 50px 100px darkgrey;
+  margin: 20px 0px 20px 0px;
+}
+
+/*h1 {
   text-decoration: underline;
   font-family: cursive;
-}
+}*/
 
 body {
   background-color: lightgrey;
+}
+
+@font-face {
+  font-family: 'game-over-font';
+  src: url(assets/game-over-font.TTF) format('truetype');
+}
+h1 {
+  font-family: 'game-over-font', cursive;
 }
 
 /*canvas {

@@ -1,6 +1,12 @@
 'use strict';
 
 var imageDataArray = [];
+var barChart = null;
+var labelsArray;
+var clicksArray;
+var displayedArray;
+var totalClicksCount = 0;
+var totalClicksAllowed = 25;
 
 function Image(imageID,imageDescription,imageSrc) {
   this.imageID = imageID;
@@ -31,6 +37,7 @@ var unicorn = new Image('unicorn', 'Unicorn Meat', 'assets/unicorn.jpg');
 var usb = new Image('usb', 'Tentacle USB', 'assets/usb.gif');
 var waterCan = new Image('waterCan', 'Water Can', 'assets/waterCan.jpg');
 var wineGlass = new Image('wineGlass', 'Spill-free Wine Glass', 'assets/wineGlass.jpg');
+
 
 Image.prototype.renderImage = function() {
   var imageRendered = document.createElement('img');
@@ -101,16 +108,17 @@ function imgageEventListener() {
 // }
 
 function renderNewThreeRandomImages() {
-  var imageDisplaySection = document.getElementById('display-three-pictures-here');
-  imageDisplaySection.textContent='';
-  renderThreeRandomImages();
-  imgageEventListener();
+  if(totalClicksCount < totalClicksAllowed) {
+    var imageDisplaySection = document.getElementById('display-three-pictures-here');
+    imageDisplaySection.textContent='';
+    renderThreeRandomImages();
+    imgageEventListener();
+    totalClicksCount++;
+  } else {
+    alert('Game Over');
+    displayPlayAgain();
+  }
 }
-
-var barChart = null;
-var labelsArray;
-var clicksArray;
-var displayedArray;
 
 function genChartData() {
   clicksArray = [];
@@ -157,4 +165,47 @@ function buildBarChart() {
 // get bar chart canvas
   var clickedAndDisplayedChart = document.getElementById('display-chart-one-here').getContext('2d');
   barChart = new Chart(clickedAndDisplayedChart).Bar(barData);
+}
+
+
+// var clearLS = document.getElementById('clearLS');
+// clearLS.addEventListener function() {
+//   localstorage.clear();
+// }
+
+function beginNewGame() {
+  clearImages();
+  clicksArray = [];
+  displayedArray = [];
+  clicksArray = [];
+  displayedArray = [];
+  labelsArray = [];
+  renderThreeRandomImages();
+  imgageEventListener();
+  genChartLabels();
+  genChartData();
+  buildBarChart();
+
+}
+
+function clearImages() {
+  var images = document.getElementsByTagName('img');
+  var numOfImagesPresent = images.length;
+  for (var i= document.images.length; i-->0;) {
+    document.images[i].parentNode.removeChild(document.images[i]);
+  }
+}
+
+function displayPlayAgain() {
+  clearImages();
+  var gameOverImage = document.createElement('img');
+  gameOverImage.src = 'assets/gameOver.jpeg';
+  gameOverImage.id = 'display-gameOverImage-here';
+  var playAgainImage = document.createElement('img');
+  playAgainImage.src = 'assets/playAgainTwo.jpeg';
+  playAgainImage.id = 'display-playAgainImage-here';
+  playAgainImage.addEventListener('click', beginNewGame);
+
+  document.getElementById('display-three-pictures-here').appendChild(gameOverImage);
+  document.getElementById('display-three-pictures-here').appendChild(playAgainImage);
 }
