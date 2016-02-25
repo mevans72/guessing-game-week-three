@@ -7,6 +7,9 @@ var clicksArray;
 var displayedArray;
 var totalClicksCount = 0;
 var totalClicksAllowed = 25;
+var storedImageData;
+var parsedImageDataArray;
+var stringifiedImageDataArray;
 
 function Image(imageID,imageDescription,imageSrc) {
   this.imageID = imageID;
@@ -39,14 +42,15 @@ var waterCan = new Image('waterCan', 'Water Can', 'assets/waterCan.jpg');
 var wineGlass = new Image('wineGlass', 'Spill-free Wine Glass', 'assets/wineGlass.jpg');
 
 
-Image.prototype.renderImage = function() {
+function renderImage(randomProduct) {
   var imageRendered = document.createElement('img');
-  imageRendered.src = this.imageSrc;
+  imageRendered.src = randomProduct.imageSrc;
   // imageRendered.setAttribute('src', imageSrc);
-  imageRendered.id = this.imageID;
+  imageRendered.id = randomProduct.imageID;
   document.getElementById('display-three-pictures-here').appendChild(imageRendered);
   // console.log('Displaying ImageID: ' + imageRendered.id);
-  this.timesDisplayed++;
+  randomProduct.timesDisplayed++;
+  updateLocalStorage();
 };
 
 function genRandomImageNum() {
@@ -71,11 +75,10 @@ function renderThreeRandomImages() {
   for(var i = 0; i < threeRandomImgNums.length; i++) {
     var index = threeRandomImgNums[i];
     var object = imageDataArray[index];
-    object.renderImage();
+    renderImage(imageDataArray[index]);
   }
 }
-renderThreeRandomImages();
-imgageEventListener();
+
 
 function logClickedImages() {
   // console.log('Logging that a click has happened while testing...first thing to do when testing');
@@ -84,13 +87,14 @@ function logClickedImages() {
     if(clickedId === imageDataArray[i].imageID) {
       imageDataArray[i].timesClicked++;
       console.log('\'' + imageDataArray[i].imageDescription + '\'' + ' has been clicked ' + imageDataArray[i].timesClicked + ' times.');
+      updateLocalStorage();
     }
   }
   renderNewThreeRandomImages();
   // buildBarChart();
 }
 
-function imgageEventListener() {
+function imageEventListener() {
   var displayedImages = document.getElementsByTagName('img');
   for(var i = 0; i < displayedImages.length; i++) {
     displayedImages[i].addEventListener('click', logClickedImages);
@@ -109,7 +113,7 @@ function renderNewThreeRandomImages() {
     var imageDisplaySection = document.getElementById('display-three-pictures-here');
     imageDisplaySection.textContent='';
     renderThreeRandomImages();
-    imgageEventListener();
+    imageEventListener();
     totalClicksCount++;
   } else {
     alert('Game Over');
@@ -165,12 +169,6 @@ function buildBarChart() {
   barChart = new Chart(clickedAndDisplayedChart).Bar(barData);
 }
 
-
-// var clearLS = document.getElementById('clearLS');
-// clearLS.addEventListener function() {
-//   localstorage.clear();
-// }
-
 function beginNewGame() {
   clearImages();
   document.getElementById('display-chart-one-here').style.visibility = 'hidden';
@@ -178,7 +176,7 @@ function beginNewGame() {
   displayedArray = [];
   labelsArray = [];
   renderThreeRandomImages();
-  imgageEventListener();
+  imageEventListener();
   buildBarChart();
 }
 
@@ -210,3 +208,21 @@ function displayPlayAgain() {
   buildBarChart();
   document.getElementById('display-chart-one-here').style.visibility = 'visible';
 }
+
+function checkAndRetrieveLocalStorage() {
+  if(window.localStorage.length !== 0) {
+    storedImageData = localStorage.getItem('imageDataArrayKey');
+    parsedImageDataArray = JSON.parse(storedImageData);
+    imageDataArray = parsedImageDataArray;
+  }
+}
+// checkAndRetrieveLocalStorage();
+
+function updateLocalStorage() {
+  storedImageData = JSON.stringify(imageDataArray);
+  localStorage.setItem('imageDataArrayKey', storedImageData);
+}
+
+renderThreeRandomImages();
+imageEventListener();
+checkAndRetrieveLocalStorage();
