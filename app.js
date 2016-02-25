@@ -45,7 +45,7 @@ Image.prototype.renderImage = function() {
   // imageRendered.setAttribute('src', imageSrc);
   imageRendered.id = this.imageID;
   document.getElementById('display-three-pictures-here').appendChild(imageRendered);
-  console.log('Displaying ImageID: ' + imageRendered.id);
+  // console.log('Displaying ImageID: ' + imageRendered.id);
   this.timesDisplayed++;
 };
 
@@ -63,9 +63,6 @@ function genThreeRandomImgNums() {
   while(randomImgNum3 === randomImgNum1 || randomImgNum3 === randomImgNum2) {
     randomImgNum3 = genRandomImageNum();
   }
-  // console.log('R1: ' + randomImgNum1);
-  // console.log('R2: ' + randomImgNum2);
-  // console.log('R3: ' + randomImgNum3);
   return [randomImgNum1, randomImgNum2, randomImgNum3];
 };
 
@@ -90,7 +87,7 @@ function logClickedImages() {
     }
   }
   renderNewThreeRandomImages();
-  buildBarChart();
+  // buildBarChart();
 }
 
 function imgageEventListener() {
@@ -117,6 +114,7 @@ function renderNewThreeRandomImages() {
   } else {
     alert('Game Over');
     displayPlayAgain();
+    document.getElementById('display-chart-one-here').style.visibility = 'visible';
   }
 }
 
@@ -175,23 +173,24 @@ function buildBarChart() {
 
 function beginNewGame() {
   clearImages();
-  clicksArray = [];
-  displayedArray = [];
+  document.getElementById('display-chart-one-here').style.visibility = 'hidden';
   clicksArray = [];
   displayedArray = [];
   labelsArray = [];
   renderThreeRandomImages();
   imgageEventListener();
-  genChartLabels();
-  genChartData();
   buildBarChart();
-
 }
+
+// function clearTimesClickedAndDisplayed() {
+//
+//   }
+// }
 
 function clearImages() {
   var images = document.getElementsByTagName('img');
   var numOfImagesPresent = images.length;
-  for (var i= document.images.length; i-->0;) {
+  for(var i = document.images.length; i-->0;) {
     document.images[i].parentNode.removeChild(document.images[i]);
   }
 }
@@ -208,4 +207,6 @@ function displayPlayAgain() {
 
   document.getElementById('display-three-pictures-here').appendChild(gameOverImage);
   document.getElementById('display-three-pictures-here').appendChild(playAgainImage);
+  buildBarChart();
+  document.getElementById('display-chart-one-here').style.visibility = 'visible';
 }
