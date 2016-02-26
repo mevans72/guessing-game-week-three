@@ -100,13 +100,6 @@ function imageEventListener() {
   }
 }
 
-// function countTwentyFiveClicksEventListener() {
-//   var twentyFiveClicks = 0;
-//   for(var i = 0; i < twentyFiveClicks.length; i++) {
-//     twentyFiveClicks[i].addEventListener('click', logClickedImages);
-//   }
-// }
-
 function renderNewThreeRandomImages() {
   if(totalClicksCount < totalClicksAllowed) {
     var imageDisplaySection = document.getElementById('display-three-pictures-here');
@@ -117,13 +110,6 @@ function renderNewThreeRandomImages() {
   } else {
     alert('Game Over');
     displayPlayAgain();
-    // imageDataArray = [];
-
-    // --- wrap all of your instatiachon cals in a functions
-    // reset imageDataArray to empy aray []
-
-    // ccall your function to instatiate your image data objects
-    // reset local storage to zero
     document.getElementById('display-chart-one-here').style.visibility = 'visible';
   }
 }
@@ -154,7 +140,6 @@ function buildBarChart() {
   destroyExistingChart();
   genChartLabels();
   genChartData();
-  //attempting charting with chart-js.js
   var barData = {
     labels : labelsArray,
     datasets : [
@@ -170,7 +155,6 @@ function buildBarChart() {
       }
     ]
   };
-// get bar chart canvas
   var clickedAndDisplayedChart = document.getElementById('display-chart-one-here').getContext('2d');
   barChart = new Chart(clickedAndDisplayedChart).Bar(barData);
 }
@@ -183,16 +167,12 @@ function beginNewGame() {
   displayedArray = [];
   labelsArray = [];
   totalClicksCount = 0;
+  localStorage.removeItem('imageDataArrayKey');
   genNewGameImageInstances();
   renderThreeRandomImages();
   imageEventListener();
   buildBarChart();
 }
-
-// function clearTimesClickedAndDisplayed() {
-//
-//   }
-// }
 
 function clearImages() {
   var images = document.getElementsByTagName('img');
@@ -216,7 +196,6 @@ function displayPlayAgain() {
   document.getElementById('display-three-pictures-here').appendChild(playAgainImage);
   buildBarChart();
   document.getElementById('display-chart-one-here').style.visibility = 'visible';
-  // imageDataArray = [];
 }
 
 function checkAndRetrieveLocalStorage() {
@@ -234,8 +213,8 @@ function updateLocalStorage() {
   localStorage.setItem('imageDataArrayKey', storedImageData);
 }
 
-// beginNewGame();
-genNewGameImageInstances();
-renderThreeRandomImages();
-imageEventListener();
+beginNewGame();
+// genNewGameImageInstances();
+// renderThreeRandomImages();
+// imageEventListener();
 checkAndRetrieveLocalStorage();
